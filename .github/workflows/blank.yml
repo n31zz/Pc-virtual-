@@ -2,7 +2,7 @@
 # Configuração inicial do Windows virtual para CS2
 # Execute no PowerShell como administrador.
 
-Write-Host "Preparando o Windows para jogos..."
+
 
 # Ativa o plano de energia de alto desempenho, se disponível.
 $plano = powercfg /list
