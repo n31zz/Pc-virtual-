@@ -1,0 +1,28 @@
+
+# Configuração inicial do Windows virtual para CS2
+# Execute no PowerShell como administrador.
+
+Write-Host "Preparando o Windows para jogos..."
+
+# Ativa o plano de energia de alto desempenho, se disponível.
+$plano = powercfg /list
+if ($plano -match "High performance|Alto desempenho") {
+    powercfg /setactive SCHEME_MIN
+}
+
+# Exibe as informações do sistema.
+Write-Host "`nProcessador:"
+Get-CimInstance Win32_Processor |
+    Select-Object Name, NumberOfCores, NumberOfLogicalProcessors
+
+Write-Host "`nMemória RAM (GB):"
+[math]::Round(
+    (Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 2
+)
+
+Write-Host "`nEspaço livre nos discos:"
+Get-PSDrive -PSProvider FileSystem |
+    Select-Object Name,
+        @{Name="Livre (GB)";Expression={[math]::Round($_.Free / 1GB, 2)}}
+
+Write-Host "`nConcluído. Reinicie se alterar o plano de energia."
